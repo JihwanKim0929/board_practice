@@ -1,5 +1,6 @@
 package com.example.rest_practice.Config;
 
+import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,13 +35,17 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth)->auth
-                        .requestMatchers("/login","/","/join").permitAll()
+                        .requestMatchers("/login","/","/join","/h2-console/**").permitAll()
                         .anyRequest().authenticated());
 
         http
                 .sessionManagement((session)->session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+
+        //h2console 보기위한 설정(위의 requestMatchers의 "/h2-console/**"도)
+        http
+                .headers((headers)->headers.frameOptions((frameOptions)->frameOptions.sameOrigin()));
         return http.build();
     }
 }

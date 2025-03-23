@@ -11,16 +11,22 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResMemberDto {
 
+    private Long id;
     private String username;
+    private String role;
 
     @Builder
-    public ResMemberDto(String username){
+    public ResMemberDto(Long id, String username, String role){
+        this.id = id;
         this.username = username;
+        this.role = role;
     }
 
     public static ResMemberDto fromEntity(Member member){
         return ResMemberDto.builder()
+                .id(member.getId())
                 .username(member.getUsername())
+                .role(member.getRole())
                 .build();
     }
 }

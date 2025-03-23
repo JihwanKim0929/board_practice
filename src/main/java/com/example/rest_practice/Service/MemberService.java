@@ -17,6 +17,11 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public ResMemberDto join(MemberJoinDto memberJoinDto){
+
+        boolean isExist = memberRepository.existsByUsername(memberJoinDto.getUsername());
+        if(isExist)
+            return null;
+
         String encodedPassword = bCryptPasswordEncoder.encode(memberJoinDto.getPassword());
         memberJoinDto.setPassword(encodedPassword);
         Member member = MemberJoinDto.ofEntity(memberJoinDto);
