@@ -1,5 +1,7 @@
 package com.example.rest_practice.Config;
 
+import com.example.rest_practice.Jwt.JWTFilter;
+import com.example.rest_practice.Jwt.JWTUtil;
 import com.example.rest_practice.Jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
@@ -20,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JWTUtil jwtUtil;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -60,8 +63,12 @@ public class SecurityConfig {
         http
                 .headers((headers)->headers.frameOptions((frameOptions)->frameOptions.sameOrigin()));
 
+
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil),LoginFilter.class);
+
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
