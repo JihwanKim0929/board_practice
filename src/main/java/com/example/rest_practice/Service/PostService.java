@@ -1,5 +1,6 @@
 package com.example.rest_practice.Service;
 
+import com.example.rest_practice.Dto.Request.Post.PostUpdateDto;
 import com.example.rest_practice.Dto.Request.Post.PostWriteDto;
 import com.example.rest_practice.Dto.Response.Post.ResPostDetailDto;
 import com.example.rest_practice.Dto.Response.Post.ResPostWriteDto;
@@ -41,5 +42,15 @@ public class PostService {
     public ResPostDetailDto detail(Long id){
         Post post = postRepository.findById(id).orElse(null);
         return ResPostDetailDto.fromEntity(post);
+    }
+
+    public ResPostDetailDto update(Long postId, PostUpdateDto postUpdateDto) {
+        Post target = postRepository.findById(postId).orElse(null);
+        target.update(postUpdateDto.getTitle(), postUpdateDto.getContent());
+        return ResPostDetailDto.fromEntity(target);
+    }
+
+    public void delete(Long postId) {
+        postRepository.deleteById(postId);
     }
 }

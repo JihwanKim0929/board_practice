@@ -1,5 +1,6 @@
 package com.example.rest_practice.Controller;
 
+import com.example.rest_practice.Dto.Request.Comment.CommentUpdateDto;
 import com.example.rest_practice.Dto.Request.Comment.CommentWriteDto;
 import com.example.rest_practice.Dto.Response.Comment.ResCommentDto;
 import com.example.rest_practice.Service.CommentService;
@@ -23,5 +24,16 @@ public class CommentController {
         ResCommentDto savedCommentDto = commentService.write(postId,commentDto,username);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCommentDto);
     }
-    
+
+    @PatchMapping("/comment/{id}/update")
+    public ResponseEntity<ResCommentDto> update(@PathVariable("id") Long commentId, @RequestBody CommentUpdateDto commentUpdateDto){
+        ResCommentDto updatedCommentDto = commentService.update(commentId,commentUpdateDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedCommentDto);
+    }
+
+    @DeleteMapping("/comment/{id}/delete")
+    public ResponseEntity<Long> delete(@PathVariable("id")Long commentId){
+        commentService.delete(commentId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

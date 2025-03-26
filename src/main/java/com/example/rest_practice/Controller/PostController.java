@@ -1,5 +1,6 @@
 package com.example.rest_practice.Controller;
 
+import com.example.rest_practice.Dto.Request.Post.PostUpdateDto;
 import com.example.rest_practice.Dto.Request.Post.PostWriteDto;
 import com.example.rest_practice.Dto.Response.Post.ResPostDetailDto;
 import com.example.rest_practice.Dto.Response.Post.ResPostListDto;
@@ -40,4 +41,17 @@ public class PostController {
         ResPostDetailDto postDto = postService.detail(postId);
         return ResponseEntity.status(HttpStatus.OK).body(postDto);
     }
+
+    @PatchMapping("/{id}/update")
+    public ResponseEntity<ResPostDetailDto> update(@PathVariable("id") Long postId, @RequestBody PostUpdateDto postUpdateDto){
+        ResPostDetailDto updatedDto = postService.update(postId, postUpdateDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedDto);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Long> delete(@PathVariable("id") Long postId){
+        postService.delete(postId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }
