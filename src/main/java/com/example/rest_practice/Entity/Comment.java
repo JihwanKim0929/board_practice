@@ -12,13 +12,17 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String content;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="POST_ID")
-    Post post;
+    private Post post;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="MEMBER_ID")
+    private Member member;
 
     @Builder
     public Comment(Long id, String content, Post post){
@@ -30,5 +34,10 @@ public class Comment {
     public void setPost(Post post){
         this.post = post;
         post.getComments().add(this);
+    }
+
+    public void setMember(Member member){
+        this.member = member;
+        member.getComments().add(this);
     }
 }

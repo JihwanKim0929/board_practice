@@ -8,6 +8,8 @@ import com.example.rest_practice.Service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +29,9 @@ public class PostController {
 
     @PostMapping("/write")
     public ResponseEntity<ResPostWriteDto> write(@RequestBody PostWriteDto postDto) {
-        ResPostWriteDto savedPostDto = postService.write(postDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        ResPostWriteDto savedPostDto = postService.write(postDto,username);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPostDto);
     }
 

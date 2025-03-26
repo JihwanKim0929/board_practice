@@ -20,7 +20,6 @@ public class FirstController {
 
     @GetMapping("/who")
     public ResponseEntity<String> who(){
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //현재 로그인 한 사용자 유저네임
         String username = authentication.getName();
@@ -31,7 +30,7 @@ public class FirstController {
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
 
-
         return ResponseEntity.status(HttpStatus.OK).body("username : "+username+"\nrole : "+role);
     }
+
 }

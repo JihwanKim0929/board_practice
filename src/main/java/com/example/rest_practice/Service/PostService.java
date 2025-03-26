@@ -4,7 +4,9 @@ import com.example.rest_practice.Dto.Request.Post.PostWriteDto;
 import com.example.rest_practice.Dto.Response.Post.ResPostDetailDto;
 import com.example.rest_practice.Dto.Response.Post.ResPostWriteDto;
 import com.example.rest_practice.Dto.Response.Post.ResPostListDto;
+import com.example.rest_practice.Entity.Member;
 import com.example.rest_practice.Entity.Post;
+import com.example.rest_practice.Repository.MemberRepository;
 import com.example.rest_practice.Repository.PostRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class PostService {
+
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     public List<ResPostListDto> getAllPosts() {
         List<Post> posts = postRepository.findAll();
@@ -26,8 +30,10 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public ResPostWriteDto write(PostWriteDto postDto){
+    public ResPostWriteDto write(PostWriteDto postDto, String username){
         Post post = PostWriteDto.ofEntity(postDto);
+        Member member = memberRepository.findByUsername(username);
+        post.setMember(member);
         Post savedPost = postRepository.save(post);
         return ResPostWriteDto.fromEntity(savedPost);
     }
